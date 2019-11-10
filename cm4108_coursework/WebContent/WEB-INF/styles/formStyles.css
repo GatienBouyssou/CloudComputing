@@ -1,0 +1,30 @@
+form.formAppointment {
+    display: table;
+}
+
+div.formAppointment {
+    display: table-row;
+}
+
+div.formAppointment > label, input {
+    display: table-cell;
+    margin-bottom: 10px;
+}
+
+div.formAppointment > label {
+    padding-right: 10px;
+}
+
+input[type="number"]{
+    width: 35px;
+}
+
+#description {
+    margin: 1em 0 1em 0;
+    width: 80%;
+    height: 5em;
+}
+
+.buttonRow {
+    margin-bottom: 2em;
+}

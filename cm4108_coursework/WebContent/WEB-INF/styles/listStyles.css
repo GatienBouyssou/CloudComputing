@@ -1,0 +1,36 @@
+/*This part is focussing on the style of the appointments list*/
+
+.listAppointments  {
+    table-layout: fixed;
+    width: 40em;
+    border-collapse: separate;
+    border-spacing: 0 1em;
+}
+
+.listAppointments td {
+    padding: 10px 5px 10px 5px;
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+    overflow: hidden;
+    width: 10em;
+}
+
+.listAppointments tr td:first-child {
+    border-left: 1px solid lightgrey;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 20em;
+
+}
+
+.listAppointments tr td:last-child {
+    border-right: 1px solid lightgrey;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 5em;
+}
+
+.listAppointments tr:hover {
+    cursor: pointer;
+}
+

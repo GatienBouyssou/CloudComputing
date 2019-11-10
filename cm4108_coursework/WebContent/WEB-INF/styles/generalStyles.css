@@ -1,0 +1,44 @@
+body{
+    color: rgba(0,0,0,.87);
+    font-family: arial,sans-serif;
+    margin: 0;
+
+}
+
+.title {
+    text-align: center;
+}
+
+header {
+    width: 100%;
+    position: -webkit-sticky;
+    position: sticky;
+    top:0;
+    border-bottom: 1px solid lightgrey;
+    box-shadow: 0 4px 2px -2px rgba(32,33,36,0.28);
+    background-color: white;
+}
+
+section {
+    padding-left: 1em;
+}
+
+/*Inline the list of appointments and the part displaying the details of an appointments*/
+
+#appointmentsDisplayed {
+    width: 60%;
+    display: inline-block;
+    vertical-align: top;
+}
+#modifyAndViewAppointment {
+    position: fixed;
+    margin-top: 5px;
+    padding: 0 0 0 5em;
+    vertical-align: top;
+    width: 39%;
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid lightgrey;
+    border-radius: 25px;
+    box-shadow: 0 4px 2px 2px rgba(32,33,36,0.28);
+}
