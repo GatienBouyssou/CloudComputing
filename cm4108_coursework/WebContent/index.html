@@ -6,6 +6,8 @@
     <link type="text/css" href="styles/listStyles.css" rel="stylesheet">
     <link type="text/css" href="styles/generalStyles.css" rel="stylesheet">
     <link type="text/css" href="styles/formStyles.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="scripts/scriptAppointments.js"></script>
 </head>
 <body>
     <header>
@@ -13,8 +15,16 @@
     </header>
 
     <div id="appointmentsDisplayed">
-        <section class="formToGetAppointment">
-
+        <section class="formToGetAppointment boxLike fixed">
+            <form action="" method="post">
+                <label for="userId">User ID: </label>
+                <input type="text" name="userId" id="userId" placeholder="User id" required>
+                <label for="startDate">From: </label>
+                <input type="date" id="startDate" name="startDate" value="2018-07-22" class="date">
+                <label for="endDate">To: </label>
+                <input type="date" id="endDate" name="startDate" value="2018-07-22" class="date" required>
+                <input id="submitFilters" type="submit" value="getAppointments">
+            </form>
         </section>
         <section class="appointmentForOneMonth">
             <h3>Month Year</h3>
@@ -105,7 +115,7 @@
             <h3>Month Year</h3>
             <table class="listAppointments">
                 <tr >
-                    <td>tidazzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssstle</td> <td></td><td>01/01/1970</td>
+                    <td>tidazzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssstle</td> <td>oui</td><td>01/01/1970</td>
                 </tr>
                 <tr>
                     <td class="right">title</td> <td>Patrick</td> <td class="dateDutation">01/01/1970</td>
@@ -117,23 +127,23 @@
         </section>
     </div>
 
-    <div id="modifyAndViewAppointment">
+    <div id="modifyAndViewAppointment" class="fixed boxLike">
         <h3 class="title">Appointment description</h3>
-        <form action="" method="get" class="form-example">
+        <form action="" method="post" class="form">
             <div class="formAppointment">
                 <label for="title">Enter the title: </label>
                 <input type="text" name="title" id="title" placeholder="title" required>
             </div>
             <div class="formAppointment">
                 <label for="date">Enter the date: </label>
-                <input type="date" id="date" name="date" value="2018-07-22" required>
+                <input type="date" id="date" name="date" value="2018-07-22" class="date" required>
             </div>
-            <div>
+            <div class="formAppointment">
                 <label for="hour">Enter the start time: </label>
                 <input type="number" name="hour" id="hour" min="0" max="23" value="0" required> :
                 <input type="number" name="minutes" id="minutes" min="0" max="59" value="0" required>
             </div>
-            <div>
+            <div class="formAppointment">
                 <label for="duration">Enter the duration: </label>
                 <input type="number" name="duration" id="duration" value="0" required>h
             </div>

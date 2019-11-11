@@ -9,28 +9,33 @@
 
 .listAppointments td {
     padding: 10px 5px 10px 5px;
-    border-top: 1px solid lightgrey;
-    border-bottom: 1px solid lightgrey;
+    border-top: 2px solid lightgrey;
+    border-bottom: 2px solid lightgrey;
     overflow: hidden;
     width: 10em;
 }
 
-.listAppointments tr td:first-child {
-    border-left: 1px solid lightgrey;
+.listAppointments td:first-child {
+    border-left: 2px solid lightgrey;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     width: 20em;
 
 }
 
-.listAppointments tr td:last-child {
-    border-right: 1px solid lightgrey;
+.listAppointments td:last-child {
+    border-right: 2px solid lightgrey;
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
     width: 5em;
 }
 
-.listAppointments tr:hover {
+.listAppointments tr:hover td{
     cursor: pointer;
+    border-color: dodgerblue;
 }
 
+
+.selected td {
+    border-color: dodgerblue!important;
+}
