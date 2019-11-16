@@ -33,6 +33,6 @@ input[type="number"]{
 
 /*Style for the appointment form on the right*/
 
-.formToGetAppointment input {
+#formToGetAppointment input {
     margin-right: 1em;
 }

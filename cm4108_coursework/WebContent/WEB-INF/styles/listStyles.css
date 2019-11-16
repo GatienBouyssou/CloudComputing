@@ -2,7 +2,7 @@
 
 .listAppointments  {
     table-layout: fixed;
-    width: 40em;
+    width: 70%;
     border-collapse: separate;
     border-spacing: 0 1em;
 }
@@ -12,14 +12,14 @@
     border-top: 2px solid lightgrey;
     border-bottom: 2px solid lightgrey;
     overflow: hidden;
-    width: 10em;
+    width: 20%;
 }
 
 .listAppointments td:first-child {
     border-left: 2px solid lightgrey;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-    width: 20em;
+    width: 30%;
 
 }
 
@@ -27,7 +27,7 @@
     border-right: 2px solid lightgrey;
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
-    width: 5em;
+    width: 5%;
 }
 
 .listAppointments tr:hover td{
@@ -38,4 +38,23 @@
 
 .selected td {
     border-color: dodgerblue!important;
+}
+
+@media only screen and (max-width: 1250px){
+    .listAppointments {
+        width: 100%;
+    }
+
+    .listAppointments td {
+        width: 50%;
+    }
+
+    .listAppointments td:first-child {
+        width: 30%;
+
+    }
+
+    .listAppointments td:last-child {
+        width: 20%;
+    }
 }
