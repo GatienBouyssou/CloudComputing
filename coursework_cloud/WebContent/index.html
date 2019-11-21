@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upcomming events</title>
+    <link type="text/css" href="styles/listStyles.css" rel="stylesheet">
+    <link type="text/css" href="styles/generalStyles.css" rel="stylesheet">
+    <link type="text/css" href="styles/formStyles.css" rel="stylesheet">
+    <link type="text/css" href="styles/snackbar.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1 class="title">Appointment system</h1>
+    </header>
+
+    <div id="appointmentsDisplayed">
+        <section class="sectionToGetAppointment boxLike fixed">
+            <form id="formToGetAppointment" action="" method="post">
+                <label for="userId">User ID: </label>
+                <input type="text" name="userId" id="userId" placeholder="User id" required>
+                <label for="startDate">From: </label>
+                <input type="date" id="startDate" name="startDate" value="">
+                <label for="endDate">To: </label>
+                <input type="date" id="endDate" name="startDate" value="" >
+                <input id="submitFilters" type="submit" value="Get appointments">
+            </form>
+        </section>
+        <section class="appointmentForOneMonth">
+            <h3>List of appointments</h3>
+            <table class="listAppointments">
+                
+            </table>
+        </section>
+    </div>
+
+    <div id="modifyAndViewAppointment" class="fixed boxLike">
+        <h3 class="title">Appointment description</h3>
+        <form id="formCreateAppointment" class="form">
+            <div class="formAppointment">
+                <label for="title">Enter the title: </label>
+                <input type="text" name="title" id="title" placeholder="title" required>
+            </div>
+            <div class="formAppointment">
+                <label for="date">Enter the date: </label>
+                <input type="date" id="date" name="date" value="" class="setTodaysDate" required>
+            </div>
+            <div class="formAppointment">
+                <label for="owner">Enter the owner: </label>
+                <input type="text" id="owner" name="owner" placeholder="Owner" required>
+            </div>
+            <div class="formAppointment">
+                <label for="hour">Enter the start time: </label>
+                <input type="number" name="hour" id="hour" min="0" max="23" value="00" class="doubleDigit" required> :
+                <input type="number" name="minutes" id="minutes" min="0" max="59" value="00" class="doubleDigit" required>
+            </div>
+            <div class="formAppointment">
+                <label for="durationHour">Enter the duration: </label>
+                <input type="number" name="durationHour" id="durationHour" min="0" value="0" required>h
+                <input type="number" name="durationMin" id="durationMin" min="0" max="59" value="00" class="doubleDigit" required>min
+            </div>
+            <div>
+                <label for="description">Enter a description (optional): </label><br>
+                <textarea name="description" id="description" placeholder="Description ..."></textarea>
+            </div>
+
+            <div class="buttonRow">
+                <button id="saveAppointmentButton">Save</button>
+                <button id="createAppointmentButton">Create</button>
+            </div>
+
+        </form>
+    </div>
+    
+    <div id="snackbar">Some text some message..</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="scripts/scriptAppointments.js"></script>
+</body>
+</html>
