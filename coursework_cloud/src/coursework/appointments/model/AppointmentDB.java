@@ -12,6 +12,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
 import coursework.appointments.constants.ConfigDB;
+import coursework.aws.util.DateUtils;
 import coursework.aws.util.DynamoDBUtil;
 
 public class AppointmentDB {
@@ -31,14 +32,14 @@ public class AppointmentDB {
 		
 		DynamoDBScanExpression scanExpression=new DynamoDBScanExpression();
 		sbFilter.append("userId = :userId");
-		
 		if(startDate != null) {
-			mapAttrVal.put(":startDate", new AttributeValue(startDate.toString()));
+			System.out.println(DateUtils.dateToStringDB(startDate));
+			mapAttrVal.put(":startDate", new AttributeValue(DateUtils.dateToStringDB(startDate)));
 			sbFilter.append(" and dateAndTime >= :startDate");
 		}
-		
 		if(endDate != null) {
-			mapAttrVal.put(":endDate", new AttributeValue(endDate.toString()));
+			System.out.println(DateUtils.dateToStringDB(endDate));
+			mapAttrVal.put(":endDate", new AttributeValue(DateUtils.dateToStringDB(endDate)));
 			sbFilter.append(" and dateAndTime <= :endDate");
 		}
 		scanExpression.withFilterExpression(sbFilter.toString());

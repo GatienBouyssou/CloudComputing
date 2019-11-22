@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import coursework.aws.util.DateUtils;
-
+import coursework.appointments.constants.DateConstants;
 import coursework.appointments.model.Appointment;
 import coursework.appointments.model.AppointmentDB;
 
@@ -44,10 +44,9 @@ public class AppointmentResources {
 		
 		Date verifiedStartDate = null;
 		Date verifiedEndDate = null;
-		
 		try {
-			verifiedStartDate = DateUtils.stringToDate(startDate);
-			verifiedEndDate = DateUtils.stringToDate(endDate);
+			verifiedStartDate = DateUtils.concatenateDateAndTime(startDate, DateConstants.TIME_EQUALS_ZERO, DateConstants.TIME_EQUALS_ZERO, DateConstants.TIME_EQUALS_ZERO);
+			verifiedEndDate = DateUtils.concatenateDateAndTime(endDate, DateConstants.LAST_HOUR, DateConstants.LAST_MINUTE, DateConstants.LAST_SECOND);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(400)
 					.entity(e.getMessage())

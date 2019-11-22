@@ -26,6 +26,7 @@ $(document).ready(() => {
     	e.stopPropagation();
         if($("#formToGetAppointment")[0].checkValidity()){ /*If form is valid send to the server else let the user correct*/
             $("#formToGetAppointment").append(LOADER);
+            console.log($("#formToGetAppointment").serialize());
             $.ajax({
                 url: baseUrl + urlAllAppointments,
                 type: 'get',
@@ -34,7 +35,7 @@ $(document).ready(() => {
                 data: $("#formToGetAppointment").serialize(),
                 success: function (appointments) {
                     $(".loader").remove();
-                    console.log(appointments);
+                    $(".listAppointments").empty();
                     appointments.forEach(function(appointment){
                     	$(".listAppointments").append(createTableRow(appointment));
                     });
