@@ -38,6 +38,8 @@ public class DateUtils {
 	}
 	
 	public static Date concatenateDateAndTime(String date, int hours, int minutes, int seconds) {
+		if(date==null || date.isEmpty())
+			return null;
 		Date dateParsed = stringToDate(date);
 		dateParsed.setHours(hours);
 		dateParsed.setMinutes(minutes);
