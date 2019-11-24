@@ -2,7 +2,7 @@
 
 .listAppointments  {
     table-layout: fixed;
-    width: 70%;
+    width: 60%;
     border-collapse: separate;
     border-spacing: 0 1em;
 }
@@ -27,7 +27,8 @@
     border-right: 2px solid lightgrey;
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
-    width: 5%;
+    width: 20%;
+    text-align: right;
 }
 
 .listAppointments tr:hover td{

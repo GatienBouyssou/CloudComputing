@@ -31,14 +31,14 @@ section {
 /*Inline the list of appointments and the part displaying the details of an appointments*/
 
 #appointmentsDisplayed {
-    width: 60%;
-    display: inline-block;
-    vertical-align: top;
+    width: 100%;
 }
 #modifyAndViewAppointment {
-    vertical-align: top;
-    width: 39%;
-    display: inline-block;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+	width:39%;    
     box-sizing: border-box;
 }
 
