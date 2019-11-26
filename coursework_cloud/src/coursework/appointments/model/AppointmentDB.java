@@ -10,6 +10,7 @@ import javax.ws.rs.WebApplicationException;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDeleteExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
@@ -22,46 +23,64 @@ import coursework.aws.util.DynamoDBUtil;
 public class AppointmentDB {
 	//Getters
 	/**
-	 * Get all the appointment belonging to a user
-	 * 
+	 * Get all the appointment belonging to a user if the two dates are null.
+	 * If the startDate is null get all the appointments before the end date
+	 * If the endDate is null get all the appointments after the start date
 	 * @param userId
 	 * @return List of appointments
 	 */
 	public static List<Appointment> getAllAppointments(String userId, Date startDate, Date endDate) {
-		DynamoDBMapper db = DynamoDBUtil.getDBMapper(ConfigDB.REGION, ConfigDB.END_POINT);
-
+		
 		Map<String, AttributeValue> mapAttrVal = new HashMap<String, AttributeValue>();
 		mapAttrVal.put(":userId", new AttributeValue(userId));
 
 		StringBuilder sbFilter = new StringBuilder();
 
 		sbFilter.append("userId = :userId");
-		if (startDate != null) {
+		if (startDate != null) { // if start date not null get all dates after this date
 			mapAttrVal.put(":startDate", new AttributeValue(DateUtils.dateToStringDB(startDate)));
 			sbFilter.append(" and dateAndTime >= :startDate");
 		}
 
-		if (endDate != null) {
+		if (endDate != null) { // if end date not null get all dates before this date
 			mapAttrVal.put(":endDate", new AttributeValue(DateUtils.dateToStringDB(endDate)));
 			sbFilter.append(" and dateAndTime <= :endDate");
 		}
+		
 		DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
 		scanExpression.withFilterExpression(sbFilter.toString());
 		scanExpression.withExpressionAttributeValues(mapAttrVal);
+
 		try {
+			DynamoDBMapper db = DynamoDBUtil.getDBMapper(ConfigDB.REGION, ConfigDB.END_POINT);
 			return db.scan(Appointment.class, scanExpression);
 		} catch (Exception e) {
 			System.out.println(e);
 			throw new WebApplicationException("Sorry couldn't perform the search in the db", StatusCodes.SERVER_ERROR);
 		}
 	}
-
-	public static Appointment getAppointmentWithId(String userId, String appointmentId) {
-		Appointment appointment = new Appointment(userId, appointmentId);
+	
+	/**
+	 * Query the database to find back a particular appointment
+	 * @param userId
+	 * @param appointmentId
+	 * @return an appointment 
+	 */
+	public static Appointment getAppointmentWithId(String userId, String appointmentId) {		
+		Map<String, AttributeValue> mapAttrVal = new HashMap<String, AttributeValue>();
+		mapAttrVal.put(":appointmentId", new AttributeValue(appointmentId));
+		mapAttrVal.put(":userId", new AttributeValue(userId));
+		
+		// Find the appointment with same appointmentId and userId
+		DynamoDBQueryExpression<Appointment> queryExpression = new DynamoDBQueryExpression<Appointment>();
+		queryExpression.withKeyConditionExpression("appointmentId = :appointmentId");
+		queryExpression.withFilterExpression("userId = :userId");
+		queryExpression.withExpressionAttributeValues(mapAttrVal);
+		
 		try {
 			DynamoDBMapper db = DynamoDBUtil.getDBMapper(ConfigDB.REGION, ConfigDB.END_POINT);
-
-			return db.load(appointment);
+			List<Appointment> listAppointments = db.query(Appointment.class, queryExpression);
+			return listAppointments.get(0);
 			
 		} catch (Exception e) {
 			System.out.println(e);
@@ -83,7 +102,6 @@ public class AppointmentDB {
 	public static void updateAppointment(Appointment appointment) {
 		try {
 			DynamoDBMapper db = DynamoDBUtil.getDBMapper(ConfigDB.REGION, ConfigDB.END_POINT);
-			System.out.println(appointment);
 			db.save(appointment);
 		} catch (Exception e) {
 			System.out.println(e);

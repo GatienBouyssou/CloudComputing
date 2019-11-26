@@ -21,12 +21,12 @@ public class Appointment {
 	private String description;	
 	
 	public Appointment() {}
-
+	// Constructor to delete an appointment with its id
 	public Appointment(String userId, String appointmentId) {
 		this.setUserId(userId);
 		this.setAppointmentId(appointmentId);
 	}
-	
+	// Constructor to create an appointment
 	public Appointment(String userId, String title, Date dateTime, String owner, int durationInMinutes,
 			String description) {
 		this.setOwner(owner);
@@ -36,7 +36,7 @@ public class Appointment {
 		this.setDurationInMinutes(durationInMinutes);
 		this.setDescription(description);
 	}
-	
+	// Constructor to update an appointment
 	public Appointment(String userId, String appointmentId, String title, Date dateTime, String owner, int durationInMinutes,
 			String description) {
 		this.setAppointmentId(appointmentId);

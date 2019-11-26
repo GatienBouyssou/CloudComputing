@@ -13,6 +13,11 @@ public class DateUtils {
 	private static final String DATE_TIME_FORMAT = "yyyy-MM-dd-hh:mm:ss";
 	private static final String TIME_FORMAT = "HH:mm:ss";
 	
+	/**
+	 * check if a string match a date pattern if it does convert it to Date
+	 * @param date
+	 * @return Date
+	 */
 	public static Date stringToDate(String date) {
 		if(date==null || date.isEmpty())
 			return null;
@@ -21,32 +26,55 @@ public class DateUtils {
             df.setLenient(false);
             return df.parse(date);
         } catch (ParseException e) {
-            throw new WebApplicationException("Incorrect date format " + date,400);
+            throw new WebApplicationException("Incorrect date format for " + date,400);
         }
 	}
-	
-	public static Date stringToDateWithTime(String date) {
-		if(date==null || date.isEmpty())
+	/**
+	 * Convert a string at the format yyyy-MM-dd-hh:mm:ss to a date. If it does not 
+	 * have this format raise an exception.
+	 * @param dateAndTime
+	 * @return a Date with time in it
+	 */
+	public static Date stringToDateWithTime(String dateAndTime) {
+		if(dateAndTime==null || dateAndTime.isEmpty())
 			return null;
 		try {
             DateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
             df.setLenient(false);
-            return df.parse(date);
+            return df.parse(dateAndTime);
         } catch (ParseException e) {
-            throw new WebApplicationException("Incorrect date format " + date,400);
+            throw new WebApplicationException("Incorrect date format for " + dateAndTime,400);
         }
 	}
 	
+	/**
+	 * 
+	 * @param date
+	 * @param hours
+	 * @param minutes
+	 * @param seconds
+	 * @return
+	 */
 	public static Date concatenateDateAndTime(String date, int hours, int minutes, int seconds) {
 		if(date==null || date.isEmpty())
 			return null;
-		Date dateParsed = stringToDate(date);
-		dateParsed.setHours(hours);
-		dateParsed.setMinutes(minutes);
-		dateParsed.setSeconds(seconds);
-		return dateParsed;
+		try {
+			Date dateParsed = stringToDate(date);
+			dateParsed.setHours(hours);
+			dateParsed.setMinutes(minutes);
+			dateParsed.setSeconds(seconds);
+			return dateParsed;
+		} catch(Exception e) {
+			throw new WebApplicationException("Bad date or hour/minute format",400);
+		}
+		
 	}
 	
+	/**
+	 * Format date to string to compare it to the values in the database.
+	 * @param date
+	 * @return String like "yyyy-mm-ddThh:mm:ss.000Z"
+	 */
 	public static String dateToStringDB(Date date) {
 		// get the date with the format yyyy-mm-dd
 		DateFormat df = new SimpleDateFormat(DATE_FORMAT);

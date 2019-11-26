@@ -20,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import coursework.aws.util.DateUtils;
+import coursework.aws.util.FormValidator;
 import coursework.appointments.constants.DateConstants;
 import coursework.appointments.constants.StatusCodes;
 import coursework.appointments.model.Appointment;
@@ -30,22 +31,33 @@ public class AppointmentResources {
 	private static final String USER_ID = "userId";
 	@Context private HttpServletRequest request;
 	
+	/**
+	 * Get all appointment; can filter with a start and end date
+	 * @param userId
+	 * @param startDate
+	 * @param endDate
+	 * @return list of appointments
+	 */
 	@Path("/all")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Appointment> getAllAppointments(@QueryParam(USER_ID) String userId, 
 			@QueryParam("startDate") String startDate,
 			@QueryParam("endDate") String endDate) {	
-		if (userId.isEmpty() || userId==null){
+		
+		// check if id is null or have special characters (removed by dynamodb)
+		if (userId.isEmpty() || FormValidator.containsSpecialCharacter(userId) || userId==null){
 			throw new WebApplicationException(Response.status(StatusCodes.CLIENT_ERROR)
-					.entity("Sorry, the userId is null or empty. Please enter a userId.")
+					.entity("Sorry, the userId is empty or contains invalid special characters (Special characters accepted ._-). Please enter an user Id.")
 					.build());
 		} else {
 			request.getSession(true).setAttribute(USER_ID, userId);
 		}
+		
 		Date verifiedStartDate = null;
 		Date verifiedEndDate = null;
 		try {
+			// verify the dates
 			verifiedStartDate = DateUtils.concatenateDateAndTime(startDate, DateConstants.TIME_EQUALS_ZERO, DateConstants.TIME_EQUALS_ZERO, DateConstants.TIME_EQUALS_ZERO);
 			verifiedEndDate = DateUtils.concatenateDateAndTime(endDate, DateConstants.LAST_HOUR, DateConstants.LAST_MINUTE, DateConstants.LAST_SECOND);
 		} catch (Exception e) {
@@ -55,8 +67,7 @@ public class AppointmentResources {
 		}
 
 		try {
-			List<Appointment> appointment = AppointmentDB.getAllAppointments(userId, verifiedStartDate, verifiedEndDate);
-			return appointment;
+			return AppointmentDB.getAllAppointments(userId, verifiedStartDate, verifiedEndDate);
 		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(StatusCodes.SERVER_ERROR)
 					.entity(e.getMessage())
@@ -69,7 +80,7 @@ public class AppointmentResources {
 	@GET
 	public Appointment getAppointmentWithId(@PathParam("appointmentId") String appointmentId) {
 		String sessionUserId = (String)request.getSession(true).getAttribute(USER_ID);
-		if (sessionUserId == null) {
+		if (sessionUserId.isEmpty()) { // check if user "logged"
 			throw new WebApplicationException(Response.status(StatusCodes.CLIENT_ERROR)
 					.entity("Sorry you need to provide the user id before creating any appointments")
 					.build());
@@ -88,7 +99,7 @@ public class AppointmentResources {
 	@DELETE
 	public Response deleteAppointmentWithId(@PathParam("appointmentId") String appointmentId) {
 		String sessionUserId = (String)request.getSession(true).getAttribute(USER_ID);
-		if (sessionUserId == null) {
+		if (sessionUserId.isEmpty()) { // check if user is logged
 			throw new WebApplicationException(Response.status(StatusCodes.CLIENT_ERROR)
 					.entity("Sorry you need to provide the user id before creating any appointments")
 					.build());
@@ -117,28 +128,23 @@ public class AppointmentResources {
 			@FormParam("durationMin") int durationMin,
 			@FormParam("description") String description) {
 		String sessionUserId = (String)request.getSession(true).getAttribute(USER_ID);
-		if (sessionUserId == null) {
+		
+		Date dateTime;
+		try {
+			FormValidator.checkAppointmentForm(sessionUserId, title, date, hours, minutes, owner, durationHour, durationMin, description);
+			// check string date and convert it to Date
+			dateTime = DateUtils.concatenateDateAndTime(date, hours, minutes, 0); 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			throw new WebApplicationException(Response.status(StatusCodes.CLIENT_ERROR)
-					.entity("Sorry you need to provide the user id before creating any appointments")
+					.entity(e.getMessage())
 					.build());
 		}
 		
-		if(hours < 0 || hours >23 || minutes < 0 || minutes > 59) {
-			throw new WebApplicationException(Response.status(StatusCodes.CLIENT_ERROR)
-					.entity("The time entered is not valid.")
-					.build());
-		}
-		
-		if(durationHour < 0 || durationMin < 0 || durationMin > 59) {
-			throw new WebApplicationException(Response.status(StatusCodes.CLIENT_ERROR)
-					.entity("The duration is not valid.")
-					.build());
-		}
 		int durationInMinutes = durationHour * 60 + durationMin;
 		Appointment appointment;
 		
 		try {
-			Date dateTime = DateUtils.concatenateDateAndTime(date, hours, minutes, 0);
 			appointment = new Appointment(sessionUserId, title, dateTime, owner, durationInMinutes, description);
 			AppointmentDB.createAppointment(appointment);
 		} catch (Exception e) {
@@ -164,28 +170,21 @@ public class AppointmentResources {
 			@FormParam("description") String description) {	
 		
 		String sessionUserId = (String)request.getSession(true).getAttribute(USER_ID);
-		if (sessionUserId == null) {
+		Date dateTime;
+		try {
+			FormValidator.checkAppointmentForm(sessionUserId, title, date, hours, minutes, owner, durationHour, durationMin, description);
+			// check string date and convert it to Date
+			dateTime = DateUtils.concatenateDateAndTime(date, hours, minutes, 0);
+		} catch (Exception e) {
 			throw new WebApplicationException(Response.status(StatusCodes.CLIENT_ERROR)
-					.entity("Sorry you need to provide the user id before creating any appointments")
+					.entity(e.getMessage())
 					.build());
 		}
 		
-		if(hours < 0 || hours >23 || minutes < 0 || minutes > 59) {
-			throw new WebApplicationException(Response.status(StatusCodes.CLIENT_ERROR)
-					.entity("The time entered is not valid.")
-					.build());
-		}
-		
-		if(durationHour < 0 || durationMin < 0 || durationMin > 59) {
-			throw new WebApplicationException(Response.status(StatusCodes.CLIENT_ERROR)
-					.entity("The duration is not valid.")
-					.build());
-		}
 		int durationInMinutes = durationHour * 60 + durationMin;
 		Appointment appointment;
 		
-		try {
-			Date dateTime = DateUtils.concatenateDateAndTime(date, hours, minutes, 0);
+		try { 
 			appointment = new Appointment(sessionUserId, appointmentId, title, dateTime, owner, durationInMinutes, description);
 			AppointmentDB.updateAppointment(appointment);
 		} catch (Exception e) {

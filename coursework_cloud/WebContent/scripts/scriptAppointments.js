@@ -52,7 +52,7 @@ $(document).ready(() => {
     $('#submitFilters').click((e)=> {
     	e.preventDefault();
     	e.stopPropagation();
-        if($("#formToGetAppointment")[0].checkValidity()){ /*If form is valid send to the server else let the user correct*/
+        if($("#formToGetAppointment")[0].reportValidity()){ /*If form is valid send to the server else let the user correct*/
             $("#formToGetAppointment").append(LOADER);
             $("#addAppointmentButton")[0].disabled = false;//enable adding appointments
             $.ajax({
@@ -118,7 +118,7 @@ $(document).ready(() => {
     $('#saveAppointmentButton').click(function (e) {
     	e.preventDefault();
     	e.stopPropagation();
-        if($("#formCreateAppointment")[0].checkValidity()){ /*If form is valid send to the server else let the user correct*/
+        if($("#formCreateAppointment")[0].reportValidity()){ /*If form is valid send to the server else let the user correct*/
             $(".buttonRow").append(LOADER);
             $.modal.close();
             $.ajax({
@@ -143,7 +143,7 @@ $(document).ready(() => {
     $('#createAppointmentButton').click(function (e) {
     	e.preventDefault();
     	e.stopPropagation();
-        if($("#formCreateAppointment")[0].checkValidity()){ /*If form is valid send to the server else let the user correct*/
+        if($("#formCreateAppointment")[0].reportValidity()){ /*If form is valid send to the server else let the user correct*/
             $(".buttonRow").append(LOADER);
             $.modal.close();
             $.ajax({
@@ -185,19 +185,19 @@ function doubleTheDigit(value) {
 function showSnackBar(message) {
 	$("#snackbar")[0].innerText = message;
 	$("#snackbar").addClass("show")
-	setTimeout(function(){$("#snackbar").removeClass("show"); }, 5000);
+	setTimeout(function(){$("#snackbar").removeClass("show"); }, 7000);
 }
 
 function createTableRow (appointment) {
 	return "<tr id=\""+ appointment.appointmentId +"\">"+"<td>"+ appointment.title +"</td><td>" 
-	+ appointment.owner + "</td><td>"+ buildDate(appointment.dateTime);
-	+"</td><td class=\"icon\"><i class=\"material-icons deleteButton\">delete</i></td></tr>"
+	+ appointment.owner + "</td><td>"+ buildDate(appointment.dateTime)
+	+"</td><td class=\"icon\"><i class=\"material-icons deleteButton\">delete</i></td></tr>";
 }
 
 function buildDate(dateTime) {
 	let date = new Date(dateTime);
 	const month = date.toLocaleString('default', { month: 'long' });
-	return date.getDay() + " " + month + " " + date.getFullYear() + ", " + date.getHours() + ":" + date.getMinutes();
+	return date.getDate() + " " + month + " " + date.getFullYear() + ", " + date.getHours() + ":" + date.getMinutes();
 }
 
 function deleteAppointmentSelected(appointment) {
