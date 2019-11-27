@@ -20,8 +20,9 @@ public class FormValidator {
 	 */
 	public static void checkAppointmentForm(String sessionUserId, String title, String date, 
 			int hours, int minutes, String owner, int durationHour, int durationMin, String description) {
-		if (sessionUserId.isEmpty()) {
-			throw new WebApplicationException("Sorry you need to provide the user id before creating any appointments", StatusCodes.CLIENT_ERROR);
+
+		if (doesTheSessionExist(sessionUserId)) {
+			throw new WebApplicationException("Sorry you need to get appointments for an user before creating any appointment", StatusCodes.CLIENT_ERROR);
 		}
 		
 		if(isHoursValid(hours) || isMinutesValid(minutes)) {
@@ -45,6 +46,10 @@ public class FormValidator {
 		}
 	}
 	
+	public static boolean doesTheSessionExist(String sessionUserId) {
+		return sessionUserId == null || sessionUserId.isEmpty();
+	}
+
 	public static boolean isMinutesValid(int minutes) {
 		return minutes < 0 || minutes > 59;
 	}

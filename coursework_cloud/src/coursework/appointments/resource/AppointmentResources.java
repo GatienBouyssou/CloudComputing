@@ -135,7 +135,7 @@ public class AppointmentResources {
 			// check string date and convert it to Date
 			dateTime = DateUtils.concatenateDateAndTime(date, hours, minutes, 0); 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println(e);
 			throw new WebApplicationException(Response.status(StatusCodes.CLIENT_ERROR)
 					.entity(e.getMessage())
 					.build());

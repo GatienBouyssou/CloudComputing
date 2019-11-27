@@ -64,7 +64,7 @@ $(document).ready(() => {
                     $(".loader").remove();
                     $(".listAppointments").empty();
                     if(appointments.length == 0) {
-                    	showSnackBar("There is no appointments for this user")
+                    	showSnackBar("There is no appointment matching this query")
                     } else {
                     	appointments.forEach(function(appointment){
                     		$(".listAppointments").append(createTableRow(appointment));
@@ -197,7 +197,7 @@ function createTableRow (appointment) {
 function buildDate(dateTime) {
 	let date = new Date(dateTime);
 	const month = date.toLocaleString('default', { month: 'long' });
-	return date.getDate() + " " + month + " " + date.getFullYear() + ", " + date.getHours() + ":" + date.getMinutes();
+	return date.getDate() + " " + month + " " + date.getFullYear() + ", " + date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes();
 }
 
 function deleteAppointmentSelected(appointment) {

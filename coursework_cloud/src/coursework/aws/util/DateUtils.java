@@ -8,6 +8,8 @@ import java.util.Date;
 
 import javax.ws.rs.WebApplicationException;
 
+import coursework.appointments.constants.StatusCodes;
+
 public class DateUtils {
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	private static final String DATE_TIME_FORMAT = "yyyy-MM-dd-hh:mm:ss";
@@ -26,7 +28,7 @@ public class DateUtils {
             df.setLenient(false);
             return df.parse(date);
         } catch (ParseException e) {
-            throw new WebApplicationException("Incorrect date format for " + date,400);
+            throw new WebApplicationException("Incorrect date format it should have the format " + DATE_FORMAT,StatusCodes.CLIENT_ERROR);
         }
 	}
 	/**
@@ -43,7 +45,7 @@ public class DateUtils {
             df.setLenient(false);
             return df.parse(dateAndTime);
         } catch (ParseException e) {
-            throw new WebApplicationException("Incorrect date format for " + dateAndTime,400);
+            throw new WebApplicationException("Invalid date or time try the following format " + DATE_TIME_FORMAT ,StatusCodes.CLIENT_ERROR);
         }
 	}
 	
@@ -65,7 +67,7 @@ public class DateUtils {
 			dateParsed.setSeconds(seconds);
 			return dateParsed;
 		} catch(Exception e) {
-			throw new WebApplicationException("Bad date or hour/minute format",400);
+			throw new WebApplicationException("Invalid date or hour/minute try the following format " + DATE_TIME_FORMAT,StatusCodes.CLIENT_ERROR);
 		}
 		
 	}
